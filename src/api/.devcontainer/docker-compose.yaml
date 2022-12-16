@@ -1,0 +1,14 @@
+version: '1'
+services:
+  anime-tracker:
+    build: 
+      context: ..
+      dockerfile: Dockerfile
+    volumes:
+      - ..:/app
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    ports:
+      - 8000:8000
+    env_file:
+      - ../.env
+    network_mode: host

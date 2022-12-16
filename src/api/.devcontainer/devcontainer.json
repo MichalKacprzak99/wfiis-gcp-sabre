@@ -1,0 +1,9 @@
+{
+	"name": "Docker Compose",
+	"dockerComposeFile": "docker-compose.yaml",
+	"service": "anime-tracker",
+    "workspaceFolder": "/app",
+    "extensions": [
+        "ms-python.python",
+    ],
+}
