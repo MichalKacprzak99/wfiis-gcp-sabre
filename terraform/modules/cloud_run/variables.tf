@@ -6,8 +6,6 @@ variable "cloud_run_name" {
   type = string
 }
 
-
-
 variable "cloudsql_instance_connection_name" {
   type = string
 }

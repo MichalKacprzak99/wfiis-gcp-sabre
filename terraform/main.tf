@@ -21,8 +21,8 @@ resource "google_project_iam_binding" "admin-account-iam" {
 
 module "sql_database" {
   source        = "./modules/sql_database"
-  user_name     = var.user_name
-  user_password = var.user_password
+  user_name     = var.db_user_name
+  user_password = var.db_user_password
 }
 
 
@@ -31,7 +31,7 @@ module "api-service" {
   location                          = var.project_region
   cloudsql_instance_connection_name = module.sql_database.cloudsql_instance_connection_name
   sendgrid_api_key                  = var.sendgrid_api_key
-  sql_alchemy_database_url          = "mysql+pymysql://${var.user_name}:${var.user_password}@/${module.sql_database.cloudsql_database_name}?unix_socket=/cloudsql/${module.sql_database.cloudsql_instance_connection_name}"
+  sql_alchemy_database_url          = "mysql+pymysql://${var.db_user_name}:${var.db_user_password}@/${module.sql_database.cloudsql_database_name}?unix_socket=/cloudsql/${module.sql_database.cloudsql_instance_connection_name}"
   docker_image                      = "${var.container_registry_hostname}/${var.project_id}/${var.cloud_run_name}:latest"
   cloud_run_name                    = var.cloud_run_name
 }
@@ -39,12 +39,11 @@ module "api-service" {
 
 module "cloud_build_trigger" {
   source                      = "./modules/cloud_build_trigger"
-  name                        = "api"
-  included_files              = "src/api/**"
-  branch                      = "main"
   container_registry_hostname = var.container_registry_hostname
   cloud_run_name              = var.cloud_run_name
   region                      = var.project_region
+  project_id                  = var.project_id
+  project_num                 = var.project_number
 }
 
 
