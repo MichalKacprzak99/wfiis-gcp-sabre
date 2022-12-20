@@ -1,15 +1,18 @@
+
 resource "google_cloudbuild_trigger" "filename-trigger" {
   provider = google
   name     = replace("${var.name}-build-trigger", "_", "--")
 
   github {
-    owner = "MichalKacprzak99"
-    name  = "wfiis-gcp-sabre"
+    owner = var.github_owner
+    name  = var.github_repo_name
     push {
       branch = var.branch
     }
   }
   included_files = [var.included_files]
+
+  service_account = "projects/${var.project_id}/serviceAccounts/${var.project_num}-compute@developer.gserviceaccount.com"
 
 
   substitutions = {
@@ -19,5 +22,5 @@ resource "google_cloudbuild_trigger" "filename-trigger" {
 
   }
 
-  filename = "cloudbuild.yaml"
+  filename = var.filename
 }
