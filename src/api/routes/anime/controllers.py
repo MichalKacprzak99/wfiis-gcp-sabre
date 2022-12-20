@@ -1,9 +1,11 @@
+import datetime
 import logging
 import os
 from typing import List, Optional
 
 import requests
 from bs4 import BeautifulSoup
+from dateutil.parser import parse
 from fastapi import HTTPException
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
@@ -51,6 +53,14 @@ def update_anime(anime_id: int, anime: anime_schemas.AnimeUpdate, db: Session):
     return db_anime
 
 
+def delete_anime(anime_id: int, db: Session):
+    db_anime: db_models.Anime = db.query(db_models.Anime).get(anime_id)
+    if not db_anime:
+        raise HTTPException(status_code=404)
+    db.query(db_models.Anime).filter(db_models.Anime.id == anime_id).delete()
+    db.commit()
+
+
 def monitor_animes(db: Session):
     db_animes: List[db_models.Anime] = db.query(db_models.Anime).all()
 
@@ -59,6 +69,7 @@ def monitor_animes(db: Session):
         return True
 
     anime_information: List[str] = []
+    today = datetime.datetime.today()
 
     for db_anime in db_animes:
 
@@ -71,13 +82,19 @@ def monitor_animes(db: Session):
         table = bs.find(name='table', attrs={"class": "lista"})
         rows = table.findAll(lambda tag: tag.name == 'tr')
         rows = [r for r in rows if db_anime.name in r.find(name='td').text]
+
         if len(rows) > next_episode:
             db_anime.last_episode = len(rows)
             last_episode = rows[0]
-            last_episode_data = last_episode.find(name='td', attrs={"class": "lista_td"}).text
+            last_episode_data_text = last_episode.find(name='td', attrs={"class": "lista_td"}).text
+            last_episode_data = parse(last_episode_data_text)
+            if last_episode_data >= today:
+                anime_information.append(f'New episode no. {db_anime.last_episode} '
+                                         f'for anime: {db_anime.name} will be released at {last_episode_data_text}')
+                continue
             last_episode_title = last_episode.find(name='td').text
             anime_information.append(f'New episode no. {db_anime.last_episode} for anime: {db_anime.name} '
-                                     f'at {last_episode_data} with title {last_episode_title}')
+                                     f'today with title {last_episode_title}')
             logging.info(f"New episode for {db_anime.name}, last registered episode {db_anime.last_episode}")
         else:
             anime_information.append(f'No new episode for anime: {db_anime.name}')

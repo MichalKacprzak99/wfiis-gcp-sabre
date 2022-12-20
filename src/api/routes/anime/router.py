@@ -44,6 +44,13 @@ def update_anime(anime_id: int, anime: anime_schema.AnimeUpdate,
     return controllers.update_anime(anime_id, anime, db)
 
 
+@router.delete("/{anime_id}/",
+               operation_id='delete_anime',
+               )
+def delete_anime(anime_id: int, db: Session = Depends(get_db)):
+    return controllers.delete_anime(anime_id, db)
+
+
 @router.post("/monitor/", operation_id="monitor")
 def monitor_animes(db: Session = Depends(get_db)):
     controllers.monitor_animes(db)
