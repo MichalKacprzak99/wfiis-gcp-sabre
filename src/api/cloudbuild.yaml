@@ -15,7 +15,7 @@
 
 steps:
   - id: "build image"
-fix     name: "gcr.io/cloud-builders/docker"
+    name: "gcr.io/cloud-builders/docker"
     args: ["build", "-t", "${_HOST}/${PROJECT_ID}/${_SERVICE_NAME}", "./src/api"]
 
   - id: "push image"
