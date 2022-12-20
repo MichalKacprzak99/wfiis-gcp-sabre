@@ -1,3 +1,4 @@
+import logging
 import os
 from typing import List, Optional
 
@@ -54,6 +55,7 @@ def monitor_animes(db: Session):
     db_animes: List[db_models.Anime] = db.query(db_models.Anime).all()
 
     if not db_animes:
+        logging.info("No anime added to monitor")
         return True
 
     anime_information: List[str] = []
@@ -76,9 +78,11 @@ def monitor_animes(db: Session):
             last_episode_title = last_episode.find(name='td').text
             anime_information.append(f'New episode no. {db_anime.last_episode} for anime: {db_anime.name} '
                                      f'at {last_episode_data} with title {last_episode_title}')
-
+            logging.info(f"New episode for {db_anime.name}, last registered episode {db_anime.last_episode}")
         else:
             anime_information.append(f'No new episode for anime: {db_anime.name}')
+            logging.info(f"No new episode no. {db_anime.last_episode} for {db_anime.name}")
+
     email_message = "\n".join(anime_information)
     message = Mail(
         from_email='michal.kacprzak999@gmail.com',
@@ -88,7 +92,9 @@ def monitor_animes(db: Session):
     )
     try:
         response = sendgrid_api_client.send(message)
+        logging.info("Successfully send email")
     except Exception as e:
-        print(e)
+        logging.exception(e)
 
     db.commit()
+    return True
