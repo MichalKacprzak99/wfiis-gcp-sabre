@@ -18,7 +18,7 @@ The goal of the project is to create a service that monitors the appearance of n
 + Create GCP Project
 + Setup Cloud SQL Auth proxy - https://cloud.google.com/sql/docs/mysql/sql-proxy
 + Set correct project in gcloud - `gcloud config set project {PROJECT_ID}`
-+ Enable Google APIs(through GCP Console or gcloud) - gcloud command ```gcloud services enable sqladmin.googleapis.com run.googleapis.com cloudbuild.googleapis.com containerregistry.googleapis.com storage.googleapis.com cloudscheduler.googleapis.com logging```:
++ Enable Google APIs(through GCP Console or gcloud) - gcloud command ```gcloud services enable sqladmin.googleapis.com run.googleapis.com cloudbuild.googleapis.com containerregistry.googleapis.com storage.googleapis.com cloudscheduler.googleapis.com logging iam.googleapis.com```:
   * Cloud SQL - sqladmin.googleapis.com
   * Cloud Storage - storage.googleapis.com
   * Cloud Run - run.googleapis.com
