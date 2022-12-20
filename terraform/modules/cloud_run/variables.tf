@@ -1,4 +1,4 @@
-variable "location" {
+variable "project_region" {
   type = string
 }
 

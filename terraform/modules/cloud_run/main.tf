@@ -1,6 +1,6 @@
 resource "google_cloud_run_service" "api" {
   name     = var.cloud_run_name
-  location = var.location
+  location = var.project_region
 
   template {
     spec {

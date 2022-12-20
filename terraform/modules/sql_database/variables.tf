@@ -1,24 +1,21 @@
-variable "database_name" {
+variable "db_name" {
   type    = string
-  default = "production"
 }
 
-variable "instance_name" {
+variable "db_instance_name" {
   type    = string
-  default = "wfiis-sabre"
 }
 
-variable "tier" {
+variable "db_tier" {
   type    = string
-  default = "db-f1-micro"
 }
 
-variable "user_name" {
+variable "db_user_name" {
   type      = string
   sensitive = true
 }
 
-variable "user_password" {
+variable "db_user_password" {
   type      = string
   sensitive = true
 }

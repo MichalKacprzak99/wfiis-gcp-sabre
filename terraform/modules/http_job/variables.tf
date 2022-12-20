@@ -1,18 +1,15 @@
-variable "target" {
+variable "scheduler_target" {
   type = string
 }
 
-variable "name" {
+variable "scheduler_name" {
   type    = string
-  default = "monitor-animes-episodes"
 }
 
-variable "schedule" {
+variable "scheduler_cron_time" {
   type    = string
-  default = "0 20 * * *"
 }
 
-variable "time_zone" {
+variable "scheduler_time_zone" {
   type    = string
-  default = "CET"
 }

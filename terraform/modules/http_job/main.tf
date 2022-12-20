@@ -1,10 +1,10 @@
 resource "google_cloud_scheduler_job" "http_job" {
-    name                    = var.name
-    schedule                = var.schedule
-    time_zone               = var.time_zone
+    name                    = var.scheduler_name
+    schedule                = var.scheduler_cron_time
+    time_zone               = var.scheduler_time_zone
 
     http_target {
         http_method         = "POST"
-        uri                 = var.target
+        uri                 = var.scheduler_target
     }
 }
