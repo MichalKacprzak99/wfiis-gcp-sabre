@@ -4,12 +4,9 @@ ENV PYTHONUNBUFFERED True
 
 WORKDIR /app
 
-ADD requirements.txt .
+COPY requirements.txt .
 
-RUN apt-get update
-RUN apt-get install -y default-libmysqlclient-dev
-RUN pip3 install -r requirements.txt
-
+RUN  --mount=type=cache,target=/root/.cache/pip pip install -r requirements.txt
 
 COPY . .
 
