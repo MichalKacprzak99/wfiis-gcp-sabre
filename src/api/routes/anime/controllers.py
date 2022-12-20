@@ -1,3 +1,4 @@
+import os
 from typing import List, Optional
 
 import requests
@@ -10,7 +11,7 @@ from sqlalchemy.orm import Session
 import db_models
 from schemas import anime as anime_schemas
 
-SENDGRID_API_KEY = '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'
+SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
 
 sendgrid_api_client = SendGridAPIClient(SENDGRID_API_KEY)
 
@@ -51,6 +52,10 @@ def update_anime(anime_id: int, anime: anime_schemas.AnimeUpdate, db: Session):
 
 def monitor_animes(db: Session):
     db_animes: List[db_models.Anime] = db.query(db_models.Anime).all()
+
+    if not db_animes:
+        return True
+
     anime_information: List[str] = []
 
     for db_anime in db_animes:

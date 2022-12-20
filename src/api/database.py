@@ -1,7 +1,12 @@
+import os
+
 import sqlalchemy
 from sqlalchemy import create_engine  # type: ignore
 from sqlalchemy.ext.declarative import declarative_base  # type: ignore
 from sqlalchemy.orm import sessionmaker  # type: ignore
+
+# mysql+pymysql://<db_user>:<db_pass>@/<db_name>?unix_socket=<socket_path>/<cloud_sql_instance_name>
+SQLALCHEMY_DATABASE_URL = os.environ.get('SQLALCHEMY_DATABASE_URL')
 
 
 def connect_unix_socket() -> sqlalchemy.engine.base.Engine:
@@ -9,22 +14,7 @@ def connect_unix_socket() -> sqlalchemy.engine.base.Engine:
     # secure - consider a more secure solution such as
     # Cloud Secret Manager (https://cloud.google.com/secret-manager) to help
     # keep secrets safe.
-    db_user = 'admin'
-    db_pass = 'admin'
-    db_name = 'production'
-    unix_socket_path = '/cloudsql/eternal-coral-371621:europe-central2:wfiis-sabre'
-
-    pool = sqlalchemy.create_engine(
-        # Equivalent URL:
-        # mysql+pymysql://<db_user>:<db_pass>@/<db_name>?unix_socket=<socket_path>/<cloud_sql_instance_name>
-        sqlalchemy.engine.url.URL.create(
-            drivername="mysql+pymysql",
-            username=db_user,
-            password=db_pass,
-            database=db_name,
-            query={"unix_socket": unix_socket_path},
-        ),
-    )
+    pool = sqlalchemy.create_engine(SQLALCHEMY_DATABASE_URL)
     return pool
 
 

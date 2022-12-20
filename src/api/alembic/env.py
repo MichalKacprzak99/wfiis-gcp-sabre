@@ -13,8 +13,7 @@ config = context.config
 # This line sets up loggers basically.
 fileConfig(config.config_file_name)
 
-# config.set_section_option("alembic", "sqlalchemy.url", os.environ["SQLALCHEMY_DATABASE_URL"]))
-config.set_section_option("alembic", "sqlalchemy.url", 'mysql+pymysql://admin:admin@127.0.0.1:5432/production')
+config.set_section_option("alembic", "sqlalchemy.url", os.environ["SQLALCHEMY_DATABASE_URL"])
 
 import db_models
 target_metadata = db_models.Base.metadata
