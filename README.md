@@ -44,7 +44,7 @@ The goal of the project is to create a service that monitors the appearance of n
   + Connect to Cloud SQL through proxy - ```gcloud proxy cloud_sql_proxy -instances="{PROJECT_ID}:{PROJECT_REGION}:{DB_INSTANCE_NAME}"=tcp:5432```
   + Keep terminal with proxy open and open another in repo root folder and execute following commands:
     + `cd src/api/`
-    + `pip install -r requirements.txt`
+    + (run only once)`pip install -r requirements.txt`
     + `alembic revision --autogenerate`
     + `alembic upgrade head`
 + Cloud Run service url should be displayed as output value if no go to GCP Console to Cloud Run to get service url
