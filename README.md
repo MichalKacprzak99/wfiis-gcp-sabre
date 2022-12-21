@@ -32,7 +32,6 @@ The goal of the project is to create a service that monitors the appearance of n
   + `cd src/api/`
   + `docker build -t {CONTAINER_REGISTER_HOSTNAME}/{PROJECT_ID}/{CLOUD_RUN_NAME} .`
   + `docker push {CONTAINER_REGISTER_HOSTNAME}/{PROJECT_ID}/{CLOUD_RUN_NAME}`
-
 + connect GitHub repository to enable creating GCP Build triggers. Go to https://console.cloud.google.com/cloud-build/triggers/connect?project={PROJECT_ID} and click on "Connect Repository" button and follow instructions.
 + Create GCP infrastructure using Terraform, variables provided for terraform must match all previously used variables({VARIABLE_NAME}):
   + `cd terraform/`
@@ -57,6 +56,9 @@ The goal of the project is to create a service that monitors the appearance of n
   "website_url": "https://bluelock.wbijam.pl/"
 }
 ```
+
+### Notes 
+  * After `terraform destroy` step "Create required tables in created SQL Database" must be repeated
 
 ## Possible updates for future
  * automatize app dockerize
